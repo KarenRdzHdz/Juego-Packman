@@ -30,6 +30,7 @@ aim = vector(5, 0)
 pacman = vector(-40, 40)                                # ***Exercise 3: changing the speed***
 #   Default speed stablished at 100
 s = 100
+cond = True
 ghosts = [
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
@@ -148,25 +149,30 @@ def move():
     up()
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
+    global cond
     options = [1, 2]
     for point, course in ghosts:
-        if valid(point + course):
+        if valid(point + course) and choice(options)==1:
             point.move(course)
         else:
-            if choice(options)==1:
+            if cond:
                 if pacman.x<point.x:
                     course.x = -5
                     course.y = 0
+                    cond = False
                 else:
                     course.x = 5
                     course.y = 0
+                    cond = False
             else:
                 if pacman.y<point.y:
                     course.x = 0
                     course.y = -5
+                    cond = True
                 else:
                     course.x = 0
                     course.y = 5
+                    cond = True
 
 
         up()
