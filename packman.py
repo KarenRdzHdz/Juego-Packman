@@ -136,7 +136,6 @@ def move():
 
     if valid(pacman + aim):
         pacman.move(aim)
-    print(pacman)
     index = offset(pacman)
 
     if tiles[index] == 1:
@@ -149,20 +148,26 @@ def move():
     up()
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
-
+    options = [1, 2]
     for point, course in ghosts:
         if valid(point + course):
             point.move(course)
         else:
-            options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
-            ]
-            plan = choice(options)
-            course.x = plan.x
-            course.y = plan.y
+            if choice(options)==1:
+                if pacman.x<point.x:
+                    course.x = -5
+                    course.y = 0
+                else:
+                    course.x = 5
+                    course.y = 0
+            else:
+                if pacman.y<point.y:
+                    course.x = 0
+                    course.y = -5
+                else:
+                    course.x = 0
+                    course.y = 5
+
 
         up()
         goto(point.x + 10, point.y + 10)
@@ -176,7 +181,15 @@ def move():
 
     ontimer(move, s)
 
-
+""" cond = True
+    for point, course in ghosts:
+        if cond:
+            course.x = pacman.x/5
+            cou
+            cond = False
+        else:
+            course.y = pacman.y/5
+            cond = True"""
 def change(x, y):
     "Change pacman aim if valid."
     if valid(pacman + vector(x, y)):
@@ -194,7 +207,7 @@ listen()
 onkey(lambda: changeSpeed(200), 'q')
 onkey(lambda: changeSpeed(100), 'w')
 onkey(lambda: changeSpeed(50), 'e')
-onkey(lambda: changeSpeed(25), 'q')
+onkey(lambda: changeSpeed(25), 'r')
 onkey(lambda: change(5, 0), 'Right')
 onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')
