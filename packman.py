@@ -18,7 +18,6 @@ Hernán Salinas Ibarra - A01570409
 Exercises marked by ***ejercicio realizado***
 
 """
-
 from random import choice
 from turtle import *
 
@@ -28,7 +27,9 @@ state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
-pacman = vector(-40, -80)
+pacman = vector(-40, 40)                                # ***Exercise 3: changing the speed***
+#   Default speed stablished at 100
+s = 100
 ghosts = [
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
@@ -65,6 +66,10 @@ tiles = [
 ]
 # fmt: on
 
+# Function to change snake speed
+def changeSpeed(sp):                                    # ***Exercise 4: changing the speed***                     
+    global s 
+    s = sp
 
 def square(x, y):
     "Draw square using path at (x, y)."
@@ -131,7 +136,7 @@ def move():
 
     if valid(pacman + aim):
         pacman.move(aim)
-
+    print(pacman)
     index = offset(pacman)
 
     if tiles[index] == 1:
@@ -169,7 +174,7 @@ def move():
         if abs(pacman - point) < 20:
             return
 
-    ontimer(move, 100)
+    ontimer(move, s)
 
 
 def change(x, y):
@@ -186,6 +191,10 @@ writer.goto(160, 160)
 writer.color('white')
 writer.write(state['score'])
 listen()
+onkey(lambda: changeSpeed(200), 'q')
+onkey(lambda: changeSpeed(100), 'w')
+onkey(lambda: changeSpeed(50), 'e')
+onkey(lambda: changeSpeed(25), 'q')
 onkey(lambda: change(5, 0), 'Right')
 onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')
