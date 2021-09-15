@@ -13,16 +13,18 @@ Karen Lizette Rodríguez Hernández - A01197734
 Jorge Eduardo Arias Arias - A01570549
 Hernán Salinas Ibarra - A01570409
 
-14/09/2021
+15/09/2021
 
 Exercises marked by ***ejercicio realizado***
 
 """
+# Required libraries imported
 from random import choice
 from turtle import *
 
 from freegames import floor, vector
 
+# Pre-stablished variables declared
 state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
@@ -31,7 +33,8 @@ pacman = vector(-40, 40)                                # ***Exercise 3: changin
 #   Default speed stablished at 100
 s = 100
 cond = True
-ghosts = [
+#   Ghosts, all four plus new ones
+ghosts = [                                              # ***Exercise 2: changing the number og thosts***
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
     [vector(100, 160), vector(0, -5)],
@@ -43,7 +46,7 @@ ghosts = [
     [vector(100, -80), vector(5, 0)],
 ]
 # fmt: off
-tiles = [
+tiles = [                                               # ***Exercise 1: changing the board***
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0,
@@ -72,6 +75,7 @@ def changeSpeed(sp):                                    # ***Exercise 4: changin
     global s 
     s = sp
 
+# Function to create all the square
 def square(x, y):
     "Draw square using path at (x, y)."
     path.up()
@@ -85,7 +89,7 @@ def square(x, y):
 
     path.end_fill()
 
-
+# Function to obtain offset of a point
 def offset(point):
     "Return offset of point in tiles."
     x = (floor(point.x, 20) + 200) / 20
@@ -93,7 +97,7 @@ def offset(point):
     index = int(x + y * 20)
     return index
 
-
+# Function to validate a point
 def valid(point):
     "Return True if point is valid in tiles."
     index = offset(point)
@@ -108,7 +112,7 @@ def valid(point):
 
     return point.x % 20 == 0 or point.y % 20 == 0
 
-
+# Function to draw the board on the square
 def world():
     "Draw world using path."
     bgcolor('black')
@@ -127,7 +131,7 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
-
+# Main movement function
 def move():
     "Move pacman and all ghosts."
     writer.undo()
@@ -155,7 +159,7 @@ def move():
         if valid(point + course) and choice(options)==1:
             point.move(course)
         else:
-            if cond:
+            if cond:                                    # ***Exercise 5: make ghosts smarter***
                 if pacman.x<point.x:
                     course.x = -5
                     course.y = 0
@@ -187,28 +191,22 @@ def move():
 
     ontimer(move, s)
 
-""" cond = True
-    for point, course in ghosts:
-        if cond:
-            course.x = pacman.x/5
-            cou
-            cond = False
-        else:
-            course.y = pacman.y/5
-            cond = True"""
+# Function to change pacman aim
 def change(x, y):
     "Change pacman aim if valid."
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
 
-
+# Setup of the game
 setup(420, 420, 370, 0)
 hideturtle()
 tracer(False)
 writer.goto(160, 160)
 writer.color('white')
 writer.write(state['score'])
+
+# Input detection
 listen()
 onkey(lambda: changeSpeed(200), 'q')
 onkey(lambda: changeSpeed(100), 'w')
@@ -219,5 +217,7 @@ onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')
 onkey(lambda: change(0, -5), 'Down')
 world()
+
+# Execution
 move()
 done()
